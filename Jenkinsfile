@@ -8,7 +8,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Pull the latest code from GitHub
-                git branch: 'main', url: git@github.com:uhaide300/devops-coursework-2.git
+                git branch: 'main', url: 'git@github.com:uhaide300/devops-coursework-2.git'
             }
         }
         stage('Build Docker Image') {
