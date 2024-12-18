@@ -27,9 +27,9 @@ pipeline {
                     # Stop and remove any existing container named test-container
                     docker rm -f test-container || true
 
-                    # Run and test the container
-                    docker run --name test-container -d -p 8080:8080 ${DOCKER_IMAGE}
-                    docker exec test-container curl -f http://localhost:8080
+                    # Run and test the container on a different host port
+                    docker run --name test-container -d -p 8081:8080 ${DOCKER_IMAGE}
+                    docker exec test-container curl -f http://localhost:8081
 
                     # Clean up by stopping and removing the container
                     docker stop test-container && docker rm test-container
