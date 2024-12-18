@@ -22,10 +22,18 @@ pipeline {
         stage('Test Docker Image') {
             steps {
                 script {
-                    // Run and test the container
-                    sh 'docker run --name test-container -d -p 8080:8080 ${DOCKER_IMAGE}'
-                    sh 'docker exec test-container curl -f http://localhost:8080'
-                    sh 'docker stop test-container && docker rm test-container'
+                    // Handle existing container conflict and run the container
+                    sh '''
+                    # Stop and remove any existing container named test-container
+                    docker rm -f test-container || true
+
+                    # Run and test the container
+                    docker run --name test-container -d -p 8080:8080 ${DOCKER_IMAGE}
+                    docker exec test-container curl -f http://localhost:8080
+
+                    # Clean up by stopping and removing the container
+                    docker stop test-container && docker rm test-container
+                    '''
                 }
             }
         }
@@ -57,3 +65,4 @@ pipeline {
         }
     }
 }
+
